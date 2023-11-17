@@ -89,6 +89,54 @@ export function resolveOpcodeLocations(
 }
 
 /**
+ * Initiates an ACIR debugger
+ */
+export async function acvmDebugger(
+  solver: WasmBlackBoxFunctionSolver,
+  acir: Buffer,
+  initialWitness: ACVMWitness,
+  callback: ACIRCallback
+): Promise<ACIRExecutionResult> {
+  const logger = createDebugLogger('aztec:simulator:acvm');
+
+  // Let's try to instantiate a DebugContext
+  // Self {
+  //     acvm: ACVM::new(blackbox_solver, &circuit.opcodes, initial_witness),
+  //     brillig_solver: None,
+  //     foreign_call_executor: ForeignCallExecutor::default(),
+  //     debug_artifact,
+  //     show_output: true,
+  //     breakpoints: HashSet::new(),
+  // }
+
+  
+  let debugContext = {
+    acvm: 
+  }
+
+  // instantiate own solver?
+  // let blackbox_solver = barretenberg_blackbox_solver::BarretenbergSolver::new();
+
+  // instantiate more specific debug artifact?
+  // let debug_artifact = DebugArtifact {
+  //     debug_symbols: vec![compiled_program.debug.clone()],
+  //     file_map: compiled_program.file_map.clone(),
+  //     warnings: compiled_program.warnings.clone(),
+  // };
+
+  // call debugger?
+  // noir_debugger::debug_circuit(
+  //       &blackbox_solver,
+  //       &compiled_program.circuit,
+  //       debug_artifact,
+  //       initial_witness,
+  //   )
+
+  
+}
+
+ 
+/**
  * The function call that executes an ACIR.
  */
 export async function acvm(

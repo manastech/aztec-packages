@@ -47,3 +47,21 @@ export async function executeUnconstrainedFunction(
   const returnValues: ACVMField[] = extractReturnWitness(acir, partialWitness);
   return decodeReturnValues(artifact, returnValues.map(fromACVMField));
 }
+
+/**
+ * Debug an unconstrained function and return the decoded values.
+ */
+export async function debugUnconstrainedFunction(
+  oracle: ViewDataOracle,
+  artifact: FunctionArtifactWithDebugMetadata,
+  contractAddress: AztecAddress,
+  functionData: FunctionData,
+  args: Fr[],
+  log = createDebugLogger('aztec:simulator:unconstrained_execution_debugger'),
+): Promise<DecodedReturn> {
+  const functionSelector = functionData.selector;
+  log(`Debugging unconstrained function ${contractAddress}:${functionSelector}`);
+
+  const acir = Buffer.from(artifact.bytecode, 'base64');
+  const initialWitness = toACVMWitness(1, args);
+}

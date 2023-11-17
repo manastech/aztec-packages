@@ -38,6 +38,7 @@
     "merkle-tree",
     "noir-compiler",
     "noir-contracts",
+    "noir-js-dap",
     "noir-protocol-circuits",
     "p2p",
     "p2p-bootstrap",

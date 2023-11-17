@@ -669,6 +669,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@aztec/noir-js-dap@workspace:noir-js-dap":
+  version: 0.0.0-use.local
+  resolution: "@aztec/noir-js-dap@workspace:noir-js-dap"
+  dependencies:
+    "@aztec/foundation": "workspace:^"
+    "@jest/globals": ^29.5.0
+    jest: ^29.5.0
+    ts-jest: ^29.1.0
+    ts-node: ^10.9.1
+    typescript: ^5.0.4
+    vscode-debugadapter: ^1.51.0
+  languageName: unknown
+  linkType: soft
+
 "@aztec/noir-protocol-circuits@workspace:^, @aztec/noir-protocol-circuits@workspace:noir-protocol-circuits":
   version: 0.0.0-use.local
   resolution: "@aztec/noir-protocol-circuits@workspace:noir-protocol-circuits"
@@ -19998,6 +20012,23 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: e8ffe688f8a7396b1357778f00cb06d1f3dadad200823c47a1955cf52774a0cbff5ac4d6a8f8d09e26c1d4e588e5815956f9eba02ae301e77a36c3d181a1bc86
+  languageName: node
+  linkType: hard
+
+"vscode-debugadapter@npm:^1.51.0":
+  version: 1.51.0
+  resolution: "vscode-debugadapter@npm:1.51.0"
+  dependencies:
+    mkdirp: ^1.0.4
+    vscode-debugprotocol: 1.51.0
+  checksum: adbd2c228ea428e8c1c7f591a4ce94ffb422422f7c87e4846a809cc0b1ef9f638854cb0dde52953edcc1a5cc259d37cff2a785eb2ea5dd13b619c5fa18152da0
+  languageName: node
+  linkType: hard
+
+"vscode-debugprotocol@npm:1.51.0":
+  version: 1.51.0
+  resolution: "vscode-debugprotocol@npm:1.51.0"
+  checksum: 5e70766ebfb7977d884a6b632b12f079ebfb1f8363822e9833aa4ec1cc32cd7bf4d599140a1d973c4173d3eb7c87e6e797774c751d477f3628236c46b78dfd76
   languageName: node
   linkType: hard
 

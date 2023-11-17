@@ -58,6 +58,8 @@ import {
   prepTx,
 } from './utils.js';
 
+import { startDap } from '@aztec/noir-js-dap/cli';
+
 const accountCreationSalt = Fr.ZERO;
 
 const { ETHEREUM_HOST = 'http://localhost:8545', PRIVATE_KEY, API_KEY } = process.env;
@@ -726,6 +728,82 @@ export function getProgram(log: LogFn, debugLogger: DebugLogger): Command {
   compileContract(program, 'compile', log);
   generateTypescriptInterface(program, 'generate-typescript', log);
   generateNoirInterface(program, 'generate-noir-interface', log);
+
+  program
+    .command('dap')
+    .description('Start a debug adapter')
+    .action(() => {
+      // TODO: we are hardcoding args to work from here inwards, unhardcode
+      // This is equivalent to running:
+      // $ aztec-cli
+      //     get_counter
+      //       --args 0x16efad912187aa8ef0dcc6ef4f3743ab327b06465d4d229943f2fe3f88b06ad9 
+      //       --contract-artifact target/Counter.json
+      //       --contract-address 0x28dfb1863b9d23219a40b80a35c083d774f55c0fea81e3b4889db6278a807486  
+      //
+      // This is based on the resulting environment from following the Getting Started
+      // with Aztec.nr tutorial.
+      const options = {
+        contractArtifact: "target/Counter.json",
+        functionName: "get_counter",
+        args: "0x16efad912187aa8ef0dcc6ef4f3743ab327b06465d4d229943f2fe3f88b06ad9", // user privkey
+        contractAddress: "0x28dfb1863b9d23219a40b80a35c083d774f55c0fea81e3b4889db6278a807486",
+      };
+
+      // Copied from 'call' cmd
+      const { functionArgs, contractArtifact } = await prepTx(
+        options.contractArtifact,
+        functionName,
+        options.args,
+        log,
+      );
+      // TODO: since these params will be sent by VS Code, we probably should
+      // perform these validations at the DAP adapter so it can handle
+      // validation errors gracefully within the protocol.
+      // Actually, everything that happens above this should also be already
+      // tried in the context of the DAP, because there's a million 
+      // env things that can go wrong. 
+      // This means we should probably run all this context initialization
+      // in a lambda, and provide it to startDap so it can wrap and manage
+      // errors gracefully.
+      // For now I'll just assume everything works well as I hardcoded all
+      // inputs and I'm running in a well-known env.
+      // I want to get as fast as possible to the point where I can run
+      // a debugger driven client.viewTx to check that the approach is sound.
+      const fnArtifact = getFunctionArtifact(contractArtifact, functionName);
+      if (fnArtifact.parameters.length !== options.args.length) {
+        throw Error(
+          `Invalid number of args passed. Expected ${fnArtifact.parameters.length}; Received: ${options.args.length}`,
+        );
+      }
+      // TODO: should we just decorate with a DebuggerClient...?
+      const client = await createCompatibleClient(options.rpcUrl, debugLogger);
+      const from = await getTxSender(client, options.from);
+
+      /*
+
+        startDapForCall(
+          client, 
+          from
+
+        )
+
+
+        def startDapForCall(...) {
+
+          
+          {
+            client.debugViewTx, or
+            client.viewTx(fn, fargs, contactAddr, from, debug: true)
+          }
+        }
+      */
+
+
+    });
+
+
+  startDap(program, 'dap', log);
 
   return program;
 }

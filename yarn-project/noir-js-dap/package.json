@@ -1,0 +1,65 @@
+{
+  "name": "@aztec/noir-js-dap",
+  "version": "0.1.0",
+  "description": "Debug adapter for Noir JS",
+  "type": "module",
+  "exports": {
+    ".": "./dest/index.js",
+    "./cli": "./dest/cli/index.js"
+  },
+  "typedocOptions": {
+    "entryPoints": [
+      "./src/index.ts"
+    ],
+    "name": "Debug adapter for Noir JS",
+    "tsconfig": "./tsconfig.json"
+  },
+  "main": "adapter.js",
+  "scripts": {
+    "build": "yarn clean && tsc -b",
+    "build:dev": "tsc -b --watch",
+    "clean": "rm -rf ./dest .tsbuildinfo",
+    "formatting": "run -T prettier --check ./src && run -T eslint ./src",
+    "formatting:fix": "run -T prettier -w ./src",
+    "test": "NODE_NO_WARNINGS=1 node --experimental-vm-modules $(yarn bin jest) --passWithNoTests"
+  },
+  "jest": {
+    "preset": "ts-jest/presets/default-esm",
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.[cm]?js$": "$1"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "cts"
+    ],
+    "testRegex": "./src/.*\\.test\\.(js|mjs|ts)$",
+    "rootDir": "./src",
+    "transform": {
+      "^.+\\.cts$": "ts-jest"
+    }
+  },
+  "keywords": [],
+  "author": "Martin Verzilli",
+  "license": "ISC",
+  "dependencies": {
+    "@aztec/foundation": "workspace:^",
+    "vscode-debugadapter": "^1.51.0"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.5.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "files": [
+    "dest",
+    "src",
+    "!*.test.*"
+  ],
+  "types": "./dest/index.d.ts",
+  "engines": {
+    "node": ">=18"
+  }
+}
