@@ -7,6 +7,10 @@ services:
     volumes:
       - ./log:/usr/src/yarn-project/aztec/log:rw
       - ${HOME}:${HOME}
+    # We are exposing the port so we
+    # can connect to the txe from localhost
+    ports:
+      - 8081:8081
     command: start --txe --port 8081
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8081/status"]
@@ -15,15 +19,27 @@ services:
       retries: 10
 
 
-  aztec-nargo:
-    image: "aztecprotocol/aztec-nargo"
-    environment:
-      HOME: # Loaded from the user shell
-      NARGO_FOREIGN_CALL_TIMEOUT: "${NARGO_FOREIGN_CALL_TIMEOUT}" # To avoid timeouts when many tests run at once
-    working_dir: "${WORKDIR}"
-    command: "${TEST_ARGS}"
-    volumes:
-      - ${HOME}:${HOME}
+  # This service is a hack for waiting until the
+  # txe is healthy - since we will not be running
+  # nargo from docker
+  healthcheck:
+    image: "bash:4.4"
+    command: "bash echo 'TXE ready'"
     depends_on:
       txe:
         condition: service_healthy
+
+  # We won't be using the productive image on nargo
+  # we will be using a local build of it
+  # aztec-nargo:
+  #   image: "aztecprotocol/aztec-nargo"
+  #   environment:
+  #     HOME: # Loaded from the user shell
+  #     NARGO_FOREIGN_CALL_TIMEOUT: "${NARGO_FOREIGN_CALL_TIMEOUT}" # To avoid timeouts when many tests run at once
+  #   working_dir: "${WORKDIR}"
+  #   command: "${TEST_ARGS}"
+  #   volumes:
+  #     - ${HOME}:${HOME}
+  #   depends_on:
+  #     txe:
+  #       condition: service_healthy
