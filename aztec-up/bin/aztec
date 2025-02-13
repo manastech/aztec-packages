@@ -47,7 +47,7 @@ if [ "${1:-}" == "test" ]; then
   export WORKDIR=$CALLED_FROM
   # get_compose -p aztec-test $FILE_ARG up --force-recreate --remove-orphans --abort-on-container-exit
   get_compose -p aztec-test $FILE_ARG up -d --force-recreate --remove-orphans
-  cd $WORKDIR && $NARGO_EXP test $TEST_ARGS
+  cd $WORKDIR && $NARGO_EXP debug --test-name $TEST_ARGS
 elif [ $# == 2 ] && [ "$1" == "start" ] && [ "$2" == "--sandbox" ]; then
   # Change working dir, so relative volume mounts are in the right place.
   cd $(dirname $0)/..
